@@ -1,0 +1,18 @@
+---
+- name: Build Docker images from Dockerfiles.
+  docker_image:
+    name: "{{ item.name }}"
+    tag: "{{ item.tag }}"
+    path: "/tmp/{{ item.directory }}"
+    state: build
+  with_items:
+    - { name: hellodefineins, tag: "nginx", directory: hellodefiniens }
+   
+- name: run the site in a docker container
+  docker:
+    name: site
+    image: "hellodefiniens:nginx"
+    state: reloaded
+    ports: "80:80"
+    log_driver: syslog
+    publish_all_ports: yes
